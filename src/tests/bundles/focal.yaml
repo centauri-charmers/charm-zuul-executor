@@ -1,4 +1,4 @@
-series: bionic
+series: focal
 applications:
   zuul-executor:
     charm: ../../.
@@ -16,6 +16,7 @@ applications:
           arguments:
             server: 10.85.132.77
             user: zuul
+            port: 29418
             # sshkey: /var/lib/zuul/.ssh/id_rsa
         - name: github-git
           driver: git
@@ -33,10 +34,15 @@ applications:
   zookeeper:
     # charm: cs:~omnivector/zookeeper
     charm: cs:~chris.macnaughton/zookeeper
+    series: bionic
     num_units: 3
-  percona-cluster:
-    charm: cs:~openstack-charmers/percona-cluster
-    num_units: 1
+  mysql-innodb-cluster:
+    charm: cs:~openstack-charmers-next/mysql-innodb-cluster
+    num_units: 3
+  scheduler-mysql-router:
+    charm: cs:~openstack-charmers-next/mysql-router
+  executor-mysql-router:
+    charm: cs:~openstack-charmers-next/mysql-router
 relations:
   - - zuul-scheduler
     - zuul-executor
@@ -44,9 +50,13 @@ relations:
     - zookeeper
   - - nodepool
     - zookeeper
-  - - percona-cluster
-    - zuul-scheduler:shared-db
+  - - mysql-innodb-cluster
+    - scheduler-mysql-router
+  - - mysql-innodb-cluster
+    - executor-mysql-router
+  - - zuul-scheduler
+    - scheduler-mysql-router
   - - zuul-executor
     - zookeeper
-  - - percona-cluster
+  - - executor-mysql-router
     - zuul-executor:shared-db

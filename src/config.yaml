@@ -1,25 +1,26 @@
 options:
-  tenant-config:
-    type: string
-    default:
-    description: |
-      URL to a file that contains a Zuul tenant-config. An example, using
-      OpenDev's config, would be:
-      https://github.com/openstack/project-config/raw/master/zuul/main.yaml
-  connections:
-    type: string
-    default:
-    description: |
-      Connections are an array of dictionaries in YAML format that configure
-      Zuul connections. An example is:
-      .
-      - name: github
-          driver: github
-          arguments:
-            app_id: string
   ssh_key:
     type: string
     default:
     description: |
       An SSH key that will be setup for the Zuul service to use at
-      /var/lib/zuul/.ssh/id_rsa, the default that Zuul expects
+      /var/lib/zuul/.ssh/id_rsa, the default that Zuul expects. This
+      key will also be configured for nodepool authentication so should
+      be added as a named keypair to your openstack with a name matching
+      your nodepool configuration (defaults to 'nodepool').
+  git_username:
+    type: string
+    default: zuul
+    description: The git username to merge changes as
+  git_email:
+    type: string
+    default: zuul@example.com
+    description: The git email to merge changes as
+  executor_disk_limit:
+    type: string
+    default: '-1'
+    description: |
+      This integer is the maximum number of megabytes that any one
+      job is allowed to consume on disk while it is running. If a
+      job’s scratch space has more than this much space consumed, it
+      will be aborted. Set to -1 to disable the limit.

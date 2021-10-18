@@ -1,5 +1,5 @@
 [Unit]
-Description=Zuul Scheduler Service
+Description=Zuul Executor Service
 After=syslog.target network.target
 
 [Service]
@@ -7,8 +7,8 @@ Type=simple
 Group=zuul
 User=zuul
 RuntimeDirectory=zuul
-ExecStart=/usr/local/bin/zuul-scheduler -d
-# ExecStop=/usr/local/bin/zuul-scheduler stop
+ExecStart=/usr/local/bin/zuul-executor -f
+ExecStop=/usr/local/bin/zuul-executor stop
 
 [Install]
 WantedBy=multi-user.target

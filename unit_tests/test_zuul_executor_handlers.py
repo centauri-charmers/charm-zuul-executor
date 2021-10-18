@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import reactive.zuul_scheduler as handlers
+import reactive.zuul_executor as handlers
 import charms_openstack.test_utils as test_utils
 
 
@@ -34,39 +34,45 @@ class TestRegisteredHooks(test_utils.TestRegisteredHooks):
                 'configure': ('zuul.configured',),
                 'wait_for_zookeeper': ('endpoint.zookeeper.available',),
                 'install_zuul': ('zuul.installed',),
-                'enable_scheduler': ('zuul-scheduler.started',),
-                'enable_web': ('zuul-web.started',),
+                'wait_for_db': ('shared-db.connected',),
+                'setup_database': ('shared-db.available',),
+                'setup_gearman': ('endpoint.gearman.available',),
+                'enable_executor': ('zuul-executor.started',),
                 'connect_zookeeper': ('endpoint.zookeeper.joined',),
-                'default_tenant_config': ('config.set.tenant-config',),
-                'configure_tenant_config_script': (
-                    'config.set.tenant-config',),
                 'add_zuul_user': ('zuul.user.created',),
-                'configure_nginx': ('nginx.configured',),
             },
             'when': {
                 'install_zuul': (
                     'apt.installed.libre2-dev', 'apt.installed.python3-pip'),
-                'configure_nginx': ('apt.installed.nginx',),
                 'configure': (
                     'zuul.installed',
                     'endpoint.zookeeper.available',
-                    'zuul.user.created',),
-                'default_tenant_config': (
-                    'zuul.installed', 'endpoint.zookeeper.available',),
+                    'shared-db.available',
+                    'zuul.user.created',
+                    'endpoint.gearman.available',),
+                'template_tenant_config': (
+                    'zuul.user.created',
+                    'zuul.installed',
+                    'config.changed.zuul-config',),
                 'configure_tenant_config_script': (
                     'zuul.installed', 'endpoint.zookeeper.available',
                     'config.set.tenant-config',),
                 'wait_for_zookeeper': (
                     'zuul.installed', 'endpoint.zookeeper.joined',),
+                'wait_for_db': ('endpoint.zookeeper.available',),
+                'setup_gearman': ('shared-db.available',),
+                'setup_database': ('shared-db.connected',),
                 'enable_scheduler': ('zuul.configured', 'zuul.user.created',),
                 'enable_web': ('zuul.configured', 'zuul.user.created',),
+                'enable_executor': ('zuul.configured', 'zuul.user.created',),
                 'set_ready': (
-                    'zuul-scheduler.started', 'zuul-web.started',
-                    'nginx.configured'),
+                    'zuul-executor.started',),
                 'connect_zookeeper': ('zuul.installed',),
                 'configure_ssh_key': (
                     'zuul.user.created', 'config.set.ssh_key',),
                 'restart_services': ('service.zuul.restart',),
+                'reload_config': (
+                    'zuul.reload_config', 'zuul-scheduler.started',),
             }
         }
         # test that the hooks were registered via the

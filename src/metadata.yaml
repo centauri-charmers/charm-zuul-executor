@@ -1,12 +1,8 @@
-name: zuul-scheduler
-summary: Zuul Scheduler Service
+name: zuul-executor
+summary: Zuul Executor Service
 maintainer: Centauri Charmers <charmers@centauri.solutions>
 description: |
-  The scheduler is the primary component of Zuul. The scheduler is not a
-  scalable component; one, and only one, scheduler must be running at all
-  times for Zuul to be operational. It receives events from any connections
-  to remote systems which have been configured, enqueues items into
-  pipelines, distributes jobs to executors, and reports results.
+  Executors are responsible for running jobs.
 tags:
   - app-server
 series:
@@ -17,3 +13,7 @@ provides: {}
 requires:
   zookeeper:
     interface: zookeeper
+  shared-db:
+    interface: mysql-shared
+  gearman:
+    interface: gearman
