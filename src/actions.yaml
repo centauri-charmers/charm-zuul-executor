@@ -1,2 +1,0 @@
-reload-config:
-  description: "Tell Zuul to reload it's tenant onfiguration"
