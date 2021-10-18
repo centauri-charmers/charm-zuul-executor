@@ -19,6 +19,6 @@ class GearmanRequires(Endpoint):
         for relation in self.relations:
             for unit in relation.joined_units:
                 log("Unit: {}".format(unit.received))
-                address = unit.ingress_address
+                address = unit.received['ingress-address']
                 if address is not None:
                     return address
