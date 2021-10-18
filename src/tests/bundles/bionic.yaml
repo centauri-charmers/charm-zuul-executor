@@ -3,19 +3,14 @@ applications:
   zuul-executor:
     charm: ../../.
     num_units: 1
-    # options:
-    #   ssh_key: include-base64:///home/ubuntu/zuul
-  zuul-scheduler:
-    charm: cs:~centauri-charmers/zuul-scheduler
-    num_units: 1
     options:
-      tenant-config: https://raw.githubusercontent.com/ChrisMacNaughton/zosci-config/master/main.yaml
-      connections: |
+      connections: &connections |
         - name: gerrit
           driver: gerrit
           arguments:
             server: 10.85.132.77
             user: zuul
+            port: 29418
             # sshkey: /var/lib/zuul/.ssh/id_rsa
         - name: github-git
           driver: git
@@ -25,6 +20,13 @@ applications:
           driver: git
           arguments:
             baseurl: https://opendev.org/
+    #   ssh_key: include-base64:///home/ubuntu/zuul
+  zuul-scheduler:
+    charm: cs:~centauri-charmers/zuul-scheduler
+    num_units: 1
+    options:
+      tenant-config: https://raw.githubusercontent.com/ChrisMacNaughton/zosci-config/master/main.yaml
+      connections: *connections
       # ssh_key: include-base64:///home/ubuntu/zuul
     # options:
       # tenant-config: https://github.com/openstack/project-config/raw/master/zuul/main.yaml

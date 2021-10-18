@@ -1,4 +1,15 @@
 options:
+  connections:
+    type: string
+    default:
+    description: |
+      Connections are an array of dictionaries in YAML format that configure
+      Zuul connections. An example is:
+      .
+      - name: github
+          driver: github
+          arguments:
+            app_id: string
   ssh_key:
     type: string
     default:

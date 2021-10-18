@@ -1,5 +1,6 @@
 import base64
 import subprocess
+import yaml
 
 import charms.reactive as reactive
 # import reactive.helpers
@@ -77,8 +78,16 @@ def configure():
     zookeeper = relations.endpoint_from_flag('endpoint.zookeeper.available')
     mysql = relations.endpoint_from_flag('shared-db.available')
     gearman = relations.endpoint_from_flag('endpoint.gearman.available')
+    connections = []
+    try:
+        connections_yaml = hookenv.config().get('connections')
+        if connections_yaml:
+            connections = yaml.safe_load(connections_yaml)
+    except yaml.YAMLError:
+        pass
     conf = {
         'zk_servers': [],
+        'connections': connections,
         'database': mysql,
         'git_username': hookenv.config().get('git_username'),
         'git_email': hookenv.config().get('git_email'),
