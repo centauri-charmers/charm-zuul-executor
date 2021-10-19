@@ -9,7 +9,9 @@ series:
   - focal
   - bionic
 subordinate: false
-provides: {}
+provides:
+  prometheus:
+    interface: prometheus
 requires:
   zookeeper:
     interface: zookeeper

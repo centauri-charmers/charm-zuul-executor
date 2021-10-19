@@ -135,3 +135,10 @@ def enable_executor():
 @reactive.when('zuul-executor.started',)
 def set_ready():
     hookenv.status_set('active', 'Zuul is ready')
+
+
+@reactive.when('endpoint.prometheus.available',
+               'snap.installed.icey-prometheus-statsd-exporter')
+def setup_prometheus():
+    prometheus = relations.endpoint_from_flag('endpoint.prometheus.available')
+    prometheus.configure(port=9102)

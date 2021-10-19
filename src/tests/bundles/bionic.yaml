@@ -39,6 +39,10 @@ applications:
   percona-cluster:
     charm: cs:~openstack-charmers/percona-cluster
     num_units: 1
+  prometheus:
+    charm: cs:prometheus2
+    num_units: 1
+
 relations:
   - - zuul-scheduler
     - zuul-executor
@@ -52,3 +56,7 @@ relations:
     - zookeeper
   - - percona-cluster
     - zuul-executor:shared-db
+  - - zuul-scheduler
+    - prometheus
+  - - zuul-executor
+    - prometheus
